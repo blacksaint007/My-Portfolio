@@ -61,17 +61,24 @@
     <footer><p>&copy; 2026 HENRY A. YEBOAH</p></footer>
     <script>
         const grid = document.getElementById('portfolio-grid');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const path = "Image/"; // This looks for a folder named Image in the same place as your HTML
+        
+        // UPDATE THIS LINE: Add the dot before the slash
+        const path = "./Image/"; 
         
         for (let i = 1; i <= 50; i++) {
             const card = document.createElement('div');
             card.className = 'work-card';
             card.onclick = () => openLightbox(i);
-            card.innerHTML = `<img src="${path}Image${i}.jpg" class="work-img" onerror="this.src='https://via.placeholder.com/400x600?text=Image+Missing'"><div class="work-info"><h3>PROJECT ${i}</h3></div>`;
+            
+            // Ensure this matches your filenames exactly (Capital "I")
+            const currentFileName = "Image" + i + ".jpg";
+            
+            card.innerHTML = `
+                <img src="${path}${currentFileName}" class="work-img" 
+                onerror="this.src='https://via.placeholder.com/400x600?text=Fix+Path+Image${i}'">
+                <div class="work-info"><h3>PROJECT ${i}</h3></div>`;
             grid.appendChild(card);
-        }
+        }}
 
         let currentImgIndex = 1;
         function openLightbox(index) {
@@ -99,4 +106,5 @@
         }
     </script>
 </body>
+
 </html>
