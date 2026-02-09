@@ -60,51 +60,60 @@
     </div>
     <footer><p>&copy; 2026 HENRY A. YEBOAH</p></footer>
     <script>
-        const grid = document.getElementById('portfolio-grid');
+       const grid = document.getElementById('portfolio-grid');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    
+    // 1. The path must point to your "Image" folder with a capital I
+    const path = "Image/"; 
+    
+    for (let i = 1; i <= 50; i++) {
+        const card = document.createElement('div');
+        card.className = 'work-card';
+        card.onclick = () => openLightbox(i);
         
-        // UPDATE THIS LINE: Add the dot before the slash
-        const path = "./Image/"; 
+        // 2. This creates the string "Image1.jpg", "Image2.jpg", etc.
+        const currentFileName = "Image" + i + ".jpg";
         
-        for (let i = 1; i <= 50; i++) {
-            const card = document.createElement('div');
-            card.className = 'work-card';
-            card.onclick = () => openLightbox(i);
-            
-            // Ensure this matches your filenames exactly (Capital "I")
-            const currentFileName = "Image" + i + ".jpg";
-            
-            card.innerHTML = `
-                <img src="${path}${currentFileName}" class="work-img" 
-                onerror="this.src='https://via.placeholder.com/400x600?text=Fix+Path+Image${i}'">
-                <div class="work-info"><h3>PROJECT ${i}</h3></div>`;
-            grid.appendChild(card);
-        }}
+        card.innerHTML = `
+            <img src="${path}${currentFileName}" class="work-img" 
+            onerror="this.src='https://via.placeholder.com/400x600?text=Check+Image+Name+${i}'">
+            <div class="work-info"><h3>PROJECT ${i}</h3></div>`;
+        grid.appendChild(card);
+    }
 
-        let currentImgIndex = 1;
-        function openLightbox(index) {
-            currentImgIndex = index;
-            lightbox.style.display = 'flex';
-            setTimeout(() => lightbox.classList.add('active'), 10);
-            updateLightbox();
-            document.body.style.overflow = 'hidden';
-        }
-        function updateLightbox() {
-            lightboxImg.classList.remove('fade-anim');
-            void lightboxImg.offsetWidth; 
-            lightboxImg.src = `${path}Image${currentImgIndex}.jpg`;
-            lightboxImg.classList.add('fade-anim');
-        }
-        function changeImage(step) {
-            currentImgIndex += step;
-            if (currentImgIndex > 50) currentImgIndex = 1;
-            if (currentImgIndex < 1) currentImgIndex = 50;
-            updateLightbox();
-        }
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            setTimeout(() => { lightbox.style.display = 'none'; document.body.style.overflow = 'auto'; }, 400);
-        }
+    let currentImgIndex = 1;
+    function openLightbox(index) {
+        currentImgIndex = index;
+        lightbox.style.display = 'flex';
+        setTimeout(() => lightbox.classList.add('active'), 10);
+        updateLightbox();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightbox() {
+        lightboxImg.classList.remove('fade-anim');
+        void lightboxImg.offsetWidth; 
+        lightboxImg.src = `Image/Image${currentImgIndex}.jpg`;
+        lightboxImg.classList.add('fade-anim');
+    }
+
+    function changeImage(step) {
+        currentImgIndex += step;
+        if (currentImgIndex > 50) currentImgIndex = 1;
+        if (currentImgIndex < 1) currentImgIndex = 50;
+        updateLightbox();
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        setTimeout(() => { 
+            lightbox.style.display = 'none'; 
+            document.body.style.overflow = 'auto'; 
+        }, 400);
+    }
     </script>
 </body>
 
 </html>
+
