@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry A. Yeboah | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg: #050505; --card-bg: #111; --text: #ffffff; --accent: #00f3ff; --border: rgba(0, 243, 255, 0.2); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; font-weight: 300; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        header { min-height: 30vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid var(--accent); padding: 40px 20px; text-align: center; position: sticky; top: 0; z-index: 1000; }
+        h1 { font-size: clamp(1.8rem, 6vw, 3rem); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 5px; }
+        .name-subtitle { color: var(--accent); font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; }
+        .bio { max-width: 800px; font-size: 0.95rem; color: #ccc; margin-bottom: 10px; line-height: 1.6; }
+        .section-title { text-align: center; color: var(--accent); text-transform: uppercase; letter-spacing: 10px; font-size: 1.2rem; margin: 60px 0 30px 0; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px 20px 20px; }
+        .work-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .work-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #1a1a1a; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .work-card:hover { border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0, 243, 255, 0.15); }
+        .work-img { width: 100%; height: 400px; object-fit: cover; display: block; }
+        .work-info { padding: 15px; text-align: center; background: #0a0a0a; }
+        #lightbox { position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.98); display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.4s ease; }
+        #lightbox.active { display: flex; opacity: 1; }
+        #lightbox img { max-width: 85%; max-height: 80%; border: 1px solid var(--accent); }
+        .fade-anim { animation: fadeInScale 0.4s ease-out; }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .close-btn { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; padding: 30px; cursor: pointer; transition: 0.3s; background: rgba(255, 255, 255, 0.05); border-radius: 50%; }
+        .nav-btn:hover { color: var(--accent); background: rgba(0, 243, 255, 0.1); }
+        .contact { max-width: 600px; margin: 80px auto; padding: 40px; border: 1px solid var(--border); border-radius: 12px; background: rgba(17,17,17,0.5); }
+        input, textarea { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #222; color: white; outline: none; }
+        .btn { background: none; color: var(--accent); border: 1px solid var(--accent); padding: 15px; width: 100%; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        .btn:hover { background: var(--accent); color: black; }
+        footer { text-align: center; padding: 40px 20px; border-top: 1px solid #111; color: #444; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MY PORTFOLIO</h1>
+        <div class="name-subtitle">Henry A. Yeboah</div>
+        <p class="bio">Dedicated worker with extreme experience in graphic design and a bit of web development. Demonstrably able to master new tools and softwares quickly. Experienced with all stages and process of development for dynamic projects. Good background with Social Media page management.</p>
+    </header>
+    <h2 class="section-title">MY WORKS</h2>
+    <div class="container"><div class="work-grid" id="portfolio-grid"></div></div>
+    <div id="lightbox" onclick="if(event.target === this) closeLightbox()">
+        <span class="close-btn" onclick="closeLightbox()">&times;</span>
+        <span class="nav-btn" style="left:20px" onclick="changeImage(-1)"><i class="fas fa-chevron-left"></i></span>
+        <img src="" id="lightbox-img">
+        <span class="nav-btn" style="right:20px" onclick="changeImage(1)"><i class="fas fa-chevron-right"></i></span>
+    </div>
+    <div class="contact">
+        <h2 style="text-align:center; margin-bottom:30px; color:var(--accent);">GET IN TOUCH</h2>
+        <form action="https://formspree.io/f/mojnvwvz" method="POST">
+            <input type="text" name="name" placeholder="NAME" required>
+            <input type="email" name="email" placeholder="EMAIL" required>
+            <textarea name="message" rows="5" placeholder="MESSAGE" required></textarea>
+            <button type="submit" class="btn">Send Inquiry</button>
+        </form>
+    </div>
+    <footer><p>&copy; 2026 HENRY A. YEBOAH</p></footer>
+    <script>
+        const grid = document.getElementById('portfolio-grid');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const path = "Image/"; // This looks for a folder named Image in the same place as your HTML
+        
+        for (let i = 1; i <= 50; i++) {
+            const card = document.createElement('div');
+            card.className = 'work-card';
+            card.onclick = () => openLightbox(i);
+            card.innerHTML = `<img src="${path}Image${i}.jpg" class="work-img" onerror="this.src='https://via.placeholder.com/400x600?text=Image+Missing'"><div class="work-info"><h3>PROJECT ${i}</h3></div>`;
+            grid.appendChild(card);
+        }
+
+        let currentImgIndex = 1;
+        function openLightbox(index) {
+            currentImgIndex = index;
+            lightbox.style.display = 'flex';
+            setTimeout(() => lightbox.classList.add('active'), 10);
+            updateLightbox();
+            document.body.style.overflow = 'hidden';
+        }
+        function updateLightbox() {
+            lightboxImg.classList.remove('fade-anim');
+            void lightboxImg.offsetWidth; 
+            lightboxImg.src = `${path}Image${currentImgIndex}.jpg`;
+            lightboxImg.classList.add('fade-anim');
+        }
+        function changeImage(step) {
+            currentImgIndex += step;
+            if (currentImgIndex > 50) currentImgIndex = 1;
+            if (currentImgIndex < 1) currentImgIndex = 50;
+            updateLightbox();
+        }
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            setTimeout(() => { lightbox.style.display = 'none'; document.body.style.overflow = 'auto'; }, 400);
+        }
+    </script>
+</body>
+</html>
